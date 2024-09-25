@@ -35,11 +35,23 @@
       "format": "bin",
       "target_path": "/fonts/"
    },
+   "7segments_20" : {
+      "sources": [
+         {
+            "file": "fonts/7segment.woff",
+            "symbols": "0123456789: -MONTUEWEDTHUFRISATSUNW"
+         }
+      ],
+      "bpp": 1,
+      "size": 20,
+      "format": "bin",
+      "target_path": "/fonts/"
+   },
    "7segments_40" : {
       "sources": [
          {
             "file": "fonts/7segment.woff",
-            "symbols": "0123456789: -"
+            "symbols": "0123456789: -MONTUEWEDTHUFRISATSUNWK"
          }
       ],
       "bpp": 1,
@@ -47,6 +59,30 @@
       "format": "bin",
       "target_path": "/fonts/"
    },
+   "7segments_50" : {
+      "sources": [
+          {
+            "file": "fonts/7segment.woff",
+            "symbols": "0123456789"
+         }
+      ],
+      "bpp": 1,
+      "size": 50,
+      "format": "bin",
+      "target_path": "/fonts/"
+   },
+    "7segments_75" : {
+      "sources": [
+         {
+            "file": "fonts/7segment.woff",
+            "symbols": "0123456789: -"
+         }
+      ],
+      "bpp": 1,
+      "size": 75,
+      "format": "bin",
+      "target_path": "/fonts/"
+    },
    "7segments_115" : {
       "sources": [
          {
