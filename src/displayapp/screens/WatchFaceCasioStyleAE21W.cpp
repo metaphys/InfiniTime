@@ -569,8 +569,6 @@ void WatchFaceCasioStyleAE21W::Refresh() {
     
         currentDate = std::chrono::time_point_cast<std::chrono::days>(currentDateTime.Get());
         if (currentDate.IsUpdated()) {
-
-            uint16_t year = dateTimeController.Year();
             Controllers::DateTime::Months month = dateTimeController.Month();
             uint8_t day = dateTimeController.Day();
             if (settingsController.GetClockType() == Controllers::Settings::ClockType::H24) {
@@ -580,12 +578,6 @@ void WatchFaceCasioStyleAE21W::Refresh() {
                 // 12h mode: mmddyyyy, first DOW=Sunday;
                 lv_label_set_text_fmt(label_date, "%2d-%2d", month, day);
             }
-
-            time_t ttTime =
-                std::chrono::system_clock::to_time_t(std::chrono::time_point_cast<std::chrono::system_clock::duration>(currentDateTime.Get()));
-            tm* tmTime = std::localtime(&ttTime);
-
-            char buffer[8];
 
             lv_label_set_text_fmt(label_day_of_week, "%s", dateTimeController.DayOfWeekShortToString());
         }    
