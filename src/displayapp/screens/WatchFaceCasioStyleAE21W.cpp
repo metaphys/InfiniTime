@@ -33,20 +33,20 @@ static constexpr lv_point_t linesPointsTBG[6][2] = {
     {{3,181},{237,181}},
     {{8,140},{19,130}},
     {{221,130},{232,140}},
-    {{232,222},{221,232}},
-    {{19,232},{8,222}}
+    {{232,223},{221,233}},
+    {{19,233},{8,223}}
 };
 
 // Time background lines widths
 static constexpr lv_style_int_t linesWidthsTBG[7] = {
-    112, 92, 15, 15, 15, 15
+    113, 93, 15, 15, 15, 15
 };
 
 // Time table lines points
 static constexpr lv_point_t linePointsTT[4][2] = {
     {{2, 169},{237, 169}},
-    {{132,125},{132, 169}},
-    {{68, 125},{68, 169}},
+    {{132,124},{132, 169}},
+    {{68, 124},{68, 169}},
     {{2, 147},{132, 147}}
 };
 
