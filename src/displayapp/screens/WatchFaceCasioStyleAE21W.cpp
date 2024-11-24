@@ -198,9 +198,10 @@ void WatchFaceCasioStyleAE21W::UpdateSelected(lv_obj_t* object, lv_event_t event
         const std::array<lv_color_t, colorsByTheme>* themeColors = returnThemeColors(static_cast<enum theme>(settingsController.GetCasioStyleAE21WColorIndex()));
         lv_color_t color_bg = (*themeColors)[0];
         lv_color_t color_lcd_bg = (*themeColors)[1];
-        lv_color_t color_lcd = (*themeColors)[2];
+        lv_color_t color_graph2_bg = (*themeColors)[2];
+        lv_color_t color_lcd = (*themeColors)[3];
         batteryThemeColor = color_lcd;
-        lv_color_t color_graph2_bg = (*themeColors)[3];
+
         lv_style_set_line_color(&style_bg, LV_STATE_DEFAULT, color_bg);
         lv_style_set_bg_color(&style_bg, LV_STATE_DEFAULT, color_bg);
         lv_style_set_line_color(&style_lcd_bg, LV_STATE_DEFAULT, color_lcd_bg);
@@ -263,8 +264,9 @@ WatchFaceCasioStyleAE21W::WatchFaceCasioStyleAE21W(Controllers::DateTime& dateTi
     const std::array<lv_color_t, colorsByTheme>* themeColors = returnThemeColors(static_cast<enum theme>(settingsController.GetCasioStyleAE21WColorIndex()));
     lv_color_t color_bg = (*themeColors)[0];
     lv_color_t color_lcd_bg = (*themeColors)[1];
-    lv_color_t color_lcd = (*themeColors)[2];
-    lv_color_t color_graph2_bg = (*themeColors)[3];
+    lv_color_t color_graph2_bg = (*themeColors)[2];
+    lv_color_t color_lcd = (*themeColors)[3];
+    batteryThemeColor = color_lcd;
 
     // set styles
     lv_style_init(&style_bg);
