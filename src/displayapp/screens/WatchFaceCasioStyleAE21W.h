@@ -71,10 +71,7 @@ namespace Pinetime {
                 // styles
                 lv_style_t style_bg;
                 lv_style_t style_lcd_bg;
-                lv_style_t style_frames;
-                lv_style_t style_grid_and_table;
                 lv_style_t style_lcd;
-                lv_style_t style_graph2_bg;
 
                 // G1 Clock
                 lv_point_t hour_point[2];
@@ -158,7 +155,6 @@ namespace Pinetime {
                                                              controllers.motionController,
                                                              controllers.filesystem,
                                                              *controllers.weatherController);
-
             };
 
             static bool IsAvailable(Pinetime::Controllers::FS& filesystem) {
