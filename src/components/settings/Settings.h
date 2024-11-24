@@ -50,6 +50,10 @@ namespace Pinetime {
         int colorIndex = 0;
       };
 
+      struct WatchFaceCasioStyleAE21W {
+        int colorIndex = 0;
+      };
+
       Settings(Pinetime::Controllers::FS& fs);
 
       Settings(const Settings&) = delete;
@@ -132,6 +136,17 @@ namespace Pinetime {
 
       int GetInfineatColorIndex() const {
         return settings.watchFaceInfineat.colorIndex;
+      };
+
+      void SetCasioStyleAE21WColorIndex(int index) {
+        if (index != settings.watchFaceCasioStyleAE21W.colorIndex) {
+          settings.watchFaceCasioStyleAE21W.colorIndex = index;
+          settingsChanged = true;
+        }
+      };
+
+      int GetCasioStyleAE21WColorIndex() const {
+        return settings.watchFaceCasioStyleAE21W.colorIndex;
       };
 
       void SetPTSGaugeStyle(PTSGaugeStyle gaugeStyle) {
@@ -320,6 +335,8 @@ namespace Pinetime {
         PineTimeStyle PTS;
 
         WatchFaceInfineat watchFaceInfineat;
+
+        WatchFaceCasioStyleAE21W watchFaceCasioStyleAE21W;
 
         std::bitset<5> wakeUpMode {0};
         uint16_t shakeWakeThreshold = 150;

@@ -44,11 +44,18 @@ namespace Pinetime {
                                          Controllers::SimpleWeatherService& weather);
                 ~WatchFaceCasioStyleAE21W() override;
 
+                bool OnTouchEvent(TouchEvents event) override;
+                bool OnButtonPushed() override;
+                void UpdateSelected(lv_obj_t* object, lv_event_t event);
+                void CloseMenu();
+
                 void Refresh() override;
 
                 static bool IsAvailable(Pinetime::Controllers::FS& filesystem);
 
             private:
+                uint32_t savedTick = 0;
+
                 Utility::DirtyValue<uint8_t> batteryPercentRemaining {};
                 Utility::DirtyValue<bool> isCharging {};
                 Utility::DirtyValue<bool> bleState {};
@@ -61,50 +68,61 @@ namespace Pinetime {
                 Utility::DirtyValue<std::optional<Pinetime::Controllers::SimpleWeatherService::CurrentWeather>> currentWeather {};
                 Utility::DirtyValue<std::chrono::time_point<std::chrono::system_clock, std::chrono::days>> currentDate;
 
-                // colors
-                lv_color_t color_bg = lv_color_hex(0x060606);
-                lv_color_t color_lcd = lv_color_hex(0x000015);
-                lv_color_t color_lcd_bg = lv_color_hex(0xd3d3c3);
-                lv_color_t color_graph2_bg = lv_color_hex(0xADD8E6);
-
                 // styles
-                lv_style_t style_bg_lines;
-                lv_style_t style_bg_lcd_lines;
-                lv_style_t graph1_arrows_line_style;
+                lv_style_t style_bg;
+                lv_style_t style_lcd_bg;
+                lv_style_t style_frames;
+                lv_style_t style_grid_and_table;
+                lv_style_t style_lcd;
+                lv_style_t style_graph2_bg;
 
-                lv_obj_t* lv_obj;
-
+                // G1 Clock
                 lv_point_t hour_point[2];
                 lv_point_t minute_point[2];
                 lv_point_t minute_point_trace[2];
-
                 lv_obj_t* hour_body;
                 lv_obj_t* minute_body;
                 lv_obj_t* minute_body_trace;
 
+                // G2 seconds
+                lv_obj_t* G2SecondMeter = nullptr;
+
+                // Main Drawing
+                lv_obj_t* someLvObj;
+                lv_obj_t* bg;
+                lv_obj_t* bg_weather;
+                lv_obj_t* graph1Frame;
+                lv_obj_t* graph1MainDisc;
+                lv_obj_t* graph1SmallDisc;
+                lv_obj_t* graph2Frame;
+                lv_obj_t* graph2MainDisc;
+                lv_obj_t* graph2SmallDisc;
+
+                // Labels and icons
+                lv_obj_t* label_function;
                 lv_obj_t* label_time;
                 lv_obj_t* label_seconds;
                 lv_obj_t* label_time_ampm;
                 lv_obj_t* label_date;
                 lv_obj_t* label_day_of_week;
-
                 lv_obj_t* bleIcon;
                 lv_obj_t* plugIcon;
-
                 lv_obj_t* label_battery_value;
                 lv_obj_t* heartbeatIcon;
                 lv_obj_t* heartbeatValue;
                 lv_obj_t* stepIcon;
                 lv_obj_t* stepValue;
                 lv_obj_t* notificationIcon;
-                lv_obj_t* graph1MainDisc;
-                lv_obj_t* graph2MainDisc;
-                lv_obj_t* graph2SmallDisc;
-                lv_obj_t* G2SecondMeter = nullptr;
-                BatteryIcon batteryIcon;
                 lv_obj_t* weatherIcon;
                 lv_obj_t* temperature;
+                BatteryIcon batteryIcon;
 
+                // Settings
+                lv_obj_t* labelBtnSettings;
+                lv_obj_t* btnClose;
+                lv_obj_t* btnNextTheme;
+                lv_obj_t* btnPrevTheme;
+                lv_obj_t* btnSettings;
 
                 Controllers::DateTime& dateTimeController;
                 const Controllers::Battery& batteryController;
