@@ -114,24 +114,22 @@ namespace {
         screen->UpdateSelected(obj, event);
     }
 
+    constexpr int nThemes = 2; // must match number of themes
+    constexpr int colorsByTheme = 4;
+
     enum class theme {
         classic,
         pink,
     };
 
-    constexpr int nThemes = 2; // must match number of themes
-    constexpr int colorsByTheme = 4;
-    lv_color_t batteryThemeColor;
-
     constexpr std::array<lv_color_t, colorsByTheme> classic = {LV_COLOR_MAKE(0x06, 0x06, 0x06),
                                                                LV_COLOR_MAKE(0xD3, 0xD3, 0xC3),
-                                                               LV_COLOR_MAKE(0x00, 0x00, 0x15),
-                                                               LV_COLOR_MAKE(0xAD, 0xD8, 0xE6)};
-    constexpr std::array<lv_color_t, colorsByTheme> pink = {LV_COLOR_MAKE(0x8B, 0x23, 0x23),
-                                                            LV_COLOR_MAKE(0xFF, 0xD6, 0xE0),
-                                                            LV_COLOR_MAKE(0xFF, 0x73, 0x96),
-                                                            LV_COLOR_MAKE(0xFF, 0x9A, 0xAA)};
-
+                                                               LV_COLOR_MAKE(0xAD, 0xD8, 0xE6),
+                                                               LV_COLOR_MAKE(0x00, 0x00, 0x15)};
+    constexpr std::array<lv_color_t, colorsByTheme> pink = {LV_COLOR_MAKE(0x0A, 0x1B, 0x3F),
+                                                            LV_COLOR_MAKE(0xFA, 0xF1, 0xE4),
+                                                            LV_COLOR_MAKE(0xFB, 0xE5, 0xF1),
+                                                            LV_COLOR_MAKE(0xE6, 0x48, 0x9A)};
 
     constexpr const std::array<lv_color_t, colorsByTheme>* returnThemeColors(theme chosenTheme) {
         if (chosenTheme == theme::classic) {
@@ -142,6 +140,7 @@ namespace {
         }
         return &classic;
     }
+    lv_color_t batteryThemeColor;
 }
 
 bool WatchFaceCasioStyleAE21W::OnTouchEvent(Pinetime::Applications::TouchEvents event) {
