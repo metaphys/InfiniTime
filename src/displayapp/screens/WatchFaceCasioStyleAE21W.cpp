@@ -423,7 +423,7 @@ WatchFaceCasioStyleAE21W::WatchFaceCasioStyleAE21W(Controllers::DateTime& dateTi
 
     weatherIcon = lv_label_create(lv_scr_act(), nullptr);
     lv_obj_set_style_local_text_color(weatherIcon, LV_LABEL_PART_MAIN, LV_STATE_DEFAULT, color_lcd);
-    lv_obj_set_style_local_text_font(weatherIcon, LV_LABEL_PART_MAIN, LV_STATE_DEFAULT, &fontawesome_weathericons);
+    lv_obj_set_style_local_text_font(weatherIcon, LV_LABEL_PART_MAIN, LV_STATE_DEFAULT, font_awesome17);
     lv_label_set_text(weatherIcon, Symbols::ban);
     lv_obj_align(weatherIcon, lv_scr_act(), LV_ALIGN_IN_LEFT_MID, 5, 70);
     lv_obj_set_auto_realign(weatherIcon, true);

@@ -39,7 +39,7 @@
       "sources": [
          {
             "file": "fonts/7segment.woff",
-            "symbols": "0123456789: -MONTUEWEDTHUFRISATSUNW"
+            "symbols": "0123456789: -MONTUEWEDTHUFRISATSUNW°"
          }
       ],
       "bpp": 1,
