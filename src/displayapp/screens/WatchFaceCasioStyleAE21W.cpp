@@ -214,8 +214,6 @@ void WatchFaceCasioStyleAE21W::UpdateSelected(lv_obj_t* object, lv_event_t event
         batteryIcon.SetColor(color_bg);
         // refresh
         lv_obj_invalidate(bg);
-        lv_disp_t * disp = lv_disp_get_default();
-        lv_refr_now(disp);
     }
   }
 }
