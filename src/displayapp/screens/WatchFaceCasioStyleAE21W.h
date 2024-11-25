@@ -16,8 +16,6 @@
 #include "components/ble/NotificationManager.h"
 
 
-
-
 namespace Pinetime {
     namespace Controllers {
         class Settings;
@@ -112,6 +110,7 @@ namespace Pinetime {
                 lv_obj_t* notificationIcon;
                 lv_obj_t* weatherIcon;
                 lv_obj_t* temperature;
+
                 BatteryIcon batteryIcon;
 
                 // Settings
