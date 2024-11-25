@@ -2,7 +2,6 @@
 #include <lvgl/lvgl.h>
 #include <cstdio>
 #include <cmath>
-#include "displayapp/Colors.h"
 #include "displayapp/screens/Symbols.h"
 #include "displayapp/screens/WeatherSymbols.h"
 #include "displayapp/screens/BatteryIcon.h"
@@ -83,8 +82,6 @@ static constexpr lv_point_t linePointsSEC[12][2] = {
 static constexpr int16_t HourLength = 30;
 static constexpr int16_t MinuteLength = 42;
 
-bool to_be_initialized = true;
-
 namespace {
     // sin(90) = 1 so the value of _lv_trigo_sin(90) is the scaling factor
     const auto LV_TRIG_SCALE = _lv_trigo_sin(90);
@@ -115,29 +112,30 @@ namespace {
     }
 
     constexpr int nThemes = 2; // must match number of themes
-    constexpr int colorsByTheme = 4;
 
     enum class theme {
         classic,
         pink,
     };
 
-    constexpr std::array<lv_color_t, colorsByTheme> classic = {LV_COLOR_MAKE(0x06, 0x06, 0x06),
+    constexpr std::array<lv_color_t, 4> classic = {LV_COLOR_MAKE(0x06, 0x06, 0x06),
                                                                LV_COLOR_MAKE(0xD3, 0xD3, 0xC3),
                                                                LV_COLOR_MAKE(0xAD, 0xD8, 0xE6),
                                                                LV_COLOR_MAKE(0x00, 0x00, 0x15)};
-    constexpr std::array<lv_color_t, colorsByTheme> pink = {LV_COLOR_MAKE(0x0A, 0x1B, 0x3F),
+
+    constexpr std::array<lv_color_t, 4> pink = {LV_COLOR_MAKE(0x0A, 0x1B, 0x3F),
                                                             LV_COLOR_MAKE(0xFA, 0xF1, 0xE4),
                                                             LV_COLOR_MAKE(0xFB, 0xE5, 0xF1),
                                                             LV_COLOR_MAKE(0xE6, 0x48, 0x9A)};
 
-    constexpr const std::array<lv_color_t, colorsByTheme>* returnThemeColors(theme chosenTheme) {
+    constexpr const std::array<lv_color_t, 4>* returnThemeColors(theme chosenTheme) {
         if (chosenTheme == theme::classic) {
             return &classic;
         }
         if (chosenTheme == theme::pink) {
             return &pink;
         }
+
         return &classic;
     }
     lv_color_t batteryThemeColor;
@@ -195,7 +193,7 @@ void WatchFaceCasioStyleAE21W::UpdateSelected(lv_obj_t* object, lv_event_t event
       settingsController.SetCasioStyleAE21WColorIndex(colorIndex);
     }
     if (object == btnNextTheme || object == btnPrevTheme) {
-        const std::array<lv_color_t, colorsByTheme>* themeColors = returnThemeColors(static_cast<enum theme>(settingsController.GetCasioStyleAE21WColorIndex()));
+        const std::array<lv_color_t, 4>* themeColors = returnThemeColors(static_cast<enum theme>(settingsController.GetCasioStyleAE21WColorIndex()));
         lv_color_t color_bg = (*themeColors)[0];
         lv_color_t color_lcd_bg = (*themeColors)[1];
         lv_color_t color_graph2_bg = (*themeColors)[2];
@@ -210,8 +208,10 @@ void WatchFaceCasioStyleAE21W::UpdateSelected(lv_obj_t* object, lv_event_t event
         lv_style_set_line_color(&style_lcd, LV_STATE_DEFAULT, color_lcd);
         lv_style_set_text_color(&style_lcd, LV_STATE_DEFAULT, color_lcd);
         lv_style_set_scale_end_color(&style_lcd, LV_STATE_DEFAULT, color_lcd);
+
         lv_obj_set_style_local_line_color(graph2MainDisc, LV_OBJ_PART_MAIN, LV_STATE_DEFAULT, color_graph2_bg);
         lv_obj_set_style_local_bg_color(graph2MainDisc, LV_OBJ_PART_MAIN, LV_STATE_DEFAULT, color_graph2_bg);
+
         batteryIcon.SetColor(color_lcd);
 
         // refresh
@@ -261,7 +261,7 @@ WatchFaceCasioStyleAE21W::WatchFaceCasioStyleAE21W(Controllers::DateTime& dateTi
         font_segment75 = lv_font_load("F:/fonts/7segments_75.bin");
     }
 
-    const std::array<lv_color_t, colorsByTheme>* themeColors = returnThemeColors(static_cast<enum theme>(settingsController.GetCasioStyleAE21WColorIndex()));
+    const std::array<lv_color_t, 4>* themeColors = returnThemeColors(static_cast<enum theme>(settingsController.GetCasioStyleAE21WColorIndex()));
     lv_color_t color_bg = (*themeColors)[0];
     lv_color_t color_lcd_bg = (*themeColors)[1];
     lv_color_t color_graph2_bg = (*themeColors)[2];
@@ -642,9 +642,8 @@ void WatchFaceCasioStyleAE21W::SetBatteryIcon() {
     if (batteryController.PercentRemaining() < 10) {
         batteryIcon.SetColor(LV_COLOR_RED);
     } else {
-        batteryIcon.SetColor(batteryThemeColor);
+          batteryIcon.SetColor(batteryThemeColor);
     }
-
 }
 
 void WatchFaceCasioStyleAE21W::Refresh() {
