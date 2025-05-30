@@ -35,15 +35,39 @@
       "format": "bin",
       "target_path": "/fonts/"
    },
-   "7segments_20" : {
+   "SFDigitalReadout26" : {
       "sources": [
          {
-            "file": "fonts/7segment.woff",
-            "symbols": "0123456789: -MONTUEWEDTHUFRISATSUNW°"
+            "file": "fonts/SFDigitalReadout.ttf",
+            "symbols": "0123456789: -MONTUEWEDTHUFRISATSUNW°P"
          }
       ],
       "bpp": 1,
-      "size": 20,
+      "size": 26,
+      "format": "bin",
+      "target_path": "/fonts/"
+   },
+   "SFDigitalReadout50" : {
+      "sources": [
+         {
+            "file": "fonts/SFDigitalReadout.ttf",
+            "symbols": "0123456789: -MONTUEWEDTHUFRISATSUNWK"
+         }
+      ],
+      "bpp": 1,
+      "size": 50,
+      "format": "bin",
+      "target_path": "/fonts/"
+   },
+   "SFDigitalReadout90" : {
+      "sources": [
+         {
+            "file": "fonts/SFDigitalReadout.ttf",
+            "symbols": "0123456789: -"
+         }
+      ],
+      "bpp": 1,
+      "size": 90,
       "format": "bin",
       "target_path": "/fonts/"
    },
@@ -59,30 +83,6 @@
       "format": "bin",
       "target_path": "/fonts/"
    },
-   "7segments_50" : {
-      "sources": [
-          {
-            "file": "fonts/7segment.woff",
-            "symbols": "0123456789"
-         }
-      ],
-      "bpp": 1,
-      "size": 50,
-      "format": "bin",
-      "target_path": "/fonts/"
-   },
-    "7segments_75" : {
-      "sources": [
-         {
-            "file": "fonts/7segment.woff",
-            "symbols": "0123456789: -"
-         }
-      ],
-      "bpp": 1,
-      "size": 75,
-      "format": "bin",
-      "target_path": "/fonts/"
-    },
    "7segments_115" : {
       "sources": [
          {
