@@ -43,20 +43,19 @@ static constexpr lv_point_t linePointsTT[4][2] = {
     {{2, 147},{132, 147}}
 };
 
-// Graph frames lines points
-static constexpr lv_point_t linePointsGF[2][9] = {
-    {{15, 2}, {101, 2}, {113, 15}, {113, 101}, {101, 113}, {15, 113}, {2, 101}, {2, 15}, {15, 2}},
-    {{139, 2}, {225, 2}, {237, 15}, {237, 101}, {225, 113}, {139, 113}, {126, 101}, {126, 15}, {139, 2}}
+// Graph2 hide top scale from graph1 picture, square line points
+static constexpr lv_point_t lineG2HideTopScale[1][2] = {
+    {{52, 7}, {64, 7}},
 };
 
-// Graph1 grid lines points
-static constexpr lv_point_t linePointsG1G[10][2] = {
-    // vertical line
-    {{0, -90}, {0, 90}},
-    // horizontal lines
-    {{-90, 0}, {90, 0}}
+// Graph2 hide top scale from graph1 picture, square line points
+static constexpr lv_point_t lineG2TopScale[3][2] = {
+    // 2 small scale
+    {{52, 3}, {52, 8}},
+    {{63, 3}, {63, 8}},
+    // Main top scale
+    {{58, 3}, {58, 11}}
 };
-
 
 // SEC label lines points
 static constexpr lv_point_t linePointsSEC[12][2] = {
@@ -85,7 +84,7 @@ static constexpr int16_t MinuteLength = 42;
 namespace {
     // sin(90) = 1 so the value of _lv_trigo_sin(90) is the scaling factor
     const auto LV_TRIG_SCALE = _lv_trigo_sin(90);
-
+    
     int16_t Cosine(int16_t angle) {
         return _lv_trigo_sin(angle + 90);
     }
@@ -101,11 +100,12 @@ namespace {
     int16_t CoordinateYRelocateG1(int16_t y) {
         return std::abs(y + 64 - LV_HOR_RES / 2);
     }
+
     lv_point_t CoordinateRelocateG1(int16_t radius, int16_t angle) {
         return lv_point_t {.x = CoordinateXRelocateG1(radius * static_cast<int32_t>(Sine(angle)) / LV_TRIG_SCALE),
                            .y = CoordinateYRelocateG1(radius * static_cast<int32_t>(Cosine(angle)) / LV_TRIG_SCALE)};
     }
-
+    
     void event_handler(lv_obj_t* obj, lv_event_t event) {
         auto* screen = static_cast<WatchFaceCasioStyleAE21W*>(obj->user_data);
         screen->UpdateSelected(obj, event);
@@ -123,7 +123,7 @@ namespace {
                                                                LV_COLOR_MAKE(0xAD, 0xD8, 0xE6),
                                                                LV_COLOR_MAKE(0x00, 0x00, 0x15)};
 
-    constexpr std::array<lv_color_t, 4> pink = {LV_COLOR_MAKE(0x0A, 0x1B, 0x3F),
+    constexpr std::array<lv_color_t, 4> pink = {LV_COLOR_MAKE(0x06, 0x06, 0x06),
                                                             LV_COLOR_MAKE(0xFA, 0xF1, 0xE4),
                                                             LV_COLOR_MAKE(0xFB, 0xE5, 0xF1),
                                                             LV_COLOR_MAKE(0xE6, 0x48, 0x9A)};
@@ -299,93 +299,24 @@ WatchFaceCasioStyleAE21W::WatchFaceCasioStyleAE21W(Controllers::DateTime& dateTi
         lv_line_set_points(someLvObj, linesPointsTBG[i], 2);
     }
 
+    // Draw Graph 1 and 2 frame and scales
+    if (filesystem.FileOpen(&f, "/images/CasioAE21WGraph.bin", LFS_O_RDONLY) >= 0) {
+        filesystem.FileClose(&f);
+        
+        AE21WGraph1 = lv_img_create(lv_scr_act(), nullptr);
+        lv_img_set_src(AE21WGraph1, "F:/images/CasioAE21WGraph.bin");
+        lv_obj_align(AE21WGraph1, nullptr, LV_ALIGN_IN_TOP_LEFT, 2, 2);
+        AE21WGraph2 = lv_img_create(lv_scr_act(), nullptr);
+        lv_img_set_src(AE21WGraph2, "F:/images/CasioAE21WGraph.bin");
+        lv_obj_align(AE21WGraph2, nullptr, LV_ALIGN_IN_TOP_LEFT, 125, 2);
+    }
+
     // Draw Background time table
     for (int i = 0; i < 4; i++) {
         someLvObj = lv_line_create(lv_scr_act(), nullptr);
         lv_obj_add_style(someLvObj, LV_OBJ_PART_MAIN, &style_bg);
         lv_obj_set_style_local_line_width(someLvObj, LV_OBJ_PART_MAIN, LV_STATE_DEFAULT, 1);
         lv_line_set_points(someLvObj, linePointsTT[i], 2);
-    }
-
-    // Draw graph1 main disc
-    graph1MainDisc = lv_obj_create(lv_scr_act(), NULL);
-    lv_obj_add_style(graph1MainDisc, LV_OBJ_PART_MAIN, &style_lcd_bg);
-    lv_obj_set_style_local_radius(graph1MainDisc, LV_OBJ_PART_MAIN, LV_STATE_DEFAULT, 43);
-    lv_obj_set_size(graph1MainDisc, 85, 85);
-    lv_obj_align(graph1MainDisc, nullptr, LV_ALIGN_IN_TOP_MID, -63, 14);
-
-    // small graph1 disc
-    graph1SmallDisc = lv_obj_create(graph1MainDisc, NULL);
-    lv_obj_add_style(graph1SmallDisc, LV_OBJ_PART_MAIN, &style_bg);
-    lv_obj_set_style_local_radius(graph1SmallDisc, LV_OBJ_PART_MAIN, LV_STATE_DEFAULT, 15);
-    lv_obj_set_size(graph1SmallDisc, 15, 15);
-    lv_obj_align(graph1SmallDisc, graph1MainDisc, LV_ALIGN_CENTER, 0, 0);
-
-    // Draw Graph1 frame
-    graph1Frame = lv_line_create(lv_scr_act(), nullptr);
-    lv_obj_add_style(graph1Frame, LV_OBJ_PART_MAIN, &style_lcd_bg);
-    lv_obj_set_style_local_line_width(graph1Frame, LV_OBJ_PART_MAIN, LV_STATE_DEFAULT, 2);
-    lv_line_set_points(graph1Frame, linePointsGF[0], 9);
-
-    // Draw graph1 scales
-    // minutes
-    someLvObj = lv_linemeter_create(lv_scr_act(), nullptr);
-    lv_obj_add_style(someLvObj, LV_OBJ_PART_MAIN, &style_lcd_bg);
-    lv_obj_set_style_local_bg_opa(someLvObj, LV_OBJ_PART_MAIN, LV_STATE_DEFAULT, LV_OPA_TRANSP);
-    lv_obj_set_style_local_scale_width(someLvObj, LV_OBJ_PART_MAIN, LV_STATE_DEFAULT, 4);
-    lv_obj_set_style_local_scale_end_line_width(someLvObj, LV_OBJ_PART_MAIN, LV_STATE_DEFAULT, 1);
-    lv_obj_set_size(someLvObj, 131, 131);
-    lv_linemeter_set_scale(someLvObj, 336, 57);
-    lv_linemeter_set_angle_offset(someLvObj, 180);
-    lv_obj_align(someLvObj, graph1MainDisc, LV_ALIGN_CENTER, 1, 1);
-
-    // 15 mins
-    someLvObj = lv_linemeter_create(lv_scr_act(), nullptr);
-    lv_obj_add_style(someLvObj, LV_OBJ_PART_MAIN, &style_lcd_bg);
-    lv_obj_set_style_local_bg_opa(someLvObj, LV_OBJ_PART_MAIN, LV_STATE_DEFAULT, LV_OPA_TRANSP);
-    lv_obj_set_style_local_scale_width(someLvObj, LV_OBJ_PART_MAIN, LV_STATE_DEFAULT, 7);
-    lv_obj_set_style_local_scale_end_line_width(someLvObj, LV_OBJ_PART_MAIN, LV_STATE_DEFAULT, 3);
-    lv_obj_set_size(someLvObj, 131, 131);
-    lv_linemeter_set_scale(someLvObj, 180, 3);
-    lv_linemeter_set_angle_offset(someLvObj, 180);
-    lv_obj_align(someLvObj, graph1MainDisc, LV_ALIGN_CENTER, 1, 1);
-
-    // hours
-    someLvObj = lv_linemeter_create(lv_scr_act(), nullptr);
-    lv_obj_add_style(someLvObj, LV_OBJ_PART_MAIN, &style_lcd_bg);
-    lv_obj_set_style_local_bg_opa(someLvObj, LV_OBJ_PART_MAIN, LV_STATE_DEFAULT, LV_OPA_TRANSP);
-    lv_obj_set_style_local_scale_width(someLvObj, LV_OBJ_PART_MAIN, LV_STATE_DEFAULT, 6);
-    lv_obj_set_style_local_scale_end_line_width(someLvObj, LV_OBJ_PART_MAIN, LV_STATE_DEFAULT, 3);
-    lv_obj_set_size(someLvObj, 131, 131);
-    lv_linemeter_set_scale(someLvObj, 300, 11);
-    lv_linemeter_set_angle_offset(someLvObj, 180);
-    lv_obj_align(someLvObj, graph1MainDisc, LV_ALIGN_CENTER, 1, 1);
-
-    // top arrows
-    someLvObj = lv_linemeter_create(lv_scr_act(), nullptr);
-    lv_obj_add_style(someLvObj, LV_OBJ_PART_MAIN, &style_lcd_bg);
-    lv_obj_set_style_local_bg_opa(someLvObj, LV_OBJ_PART_MAIN, LV_STATE_DEFAULT, LV_OPA_TRANSP);
-    lv_obj_set_style_local_scale_width(someLvObj, LV_OBJ_PART_MAIN, LV_STATE_DEFAULT, 9);
-    lv_obj_set_style_local_scale_end_line_width(someLvObj, LV_OBJ_PART_MAIN, LV_STATE_DEFAULT, 4);
-    lv_obj_set_size(someLvObj, 131, 131);
-    lv_linemeter_set_scale(someLvObj, 6, 2);
-    lv_linemeter_set_angle_offset(someLvObj, 0);
-    lv_obj_align(someLvObj, graph1MainDisc, LV_ALIGN_CENTER, 1, 1);
-
-    // Draw graph1 grid
-    for (int i = 0; i < 5; i++) {
-        // vertical lines
-        someLvObj = lv_line_create(lv_scr_act(), nullptr);
-        lv_obj_add_style(someLvObj, LV_OBJ_PART_MAIN, &style_bg);
-        lv_obj_set_style_local_line_width(someLvObj, LV_OBJ_PART_MAIN, LV_STATE_DEFAULT, 1);
-        lv_line_set_points(someLvObj, linePointsG1G[0], 2);
-        lv_obj_align(someLvObj, graph1MainDisc, LV_ALIGN_CENTER, -30 + i * 15, 0);
-        // horizontal lines
-        someLvObj = lv_line_create(lv_scr_act(), nullptr);
-        lv_obj_add_style(someLvObj, LV_OBJ_PART_MAIN, &style_bg);
-        lv_obj_set_style_local_line_width(someLvObj, LV_OBJ_PART_MAIN, LV_STATE_DEFAULT, 1);
-        lv_line_set_points(someLvObj, linePointsG1G[1], 2);
-        lv_obj_align(someLvObj, graph1MainDisc, LV_ALIGN_CENTER, 0, -30 + i * 15);
     }
 
     // G1 clock
@@ -398,62 +329,46 @@ WatchFaceCasioStyleAE21W::WatchFaceCasioStyleAE21W(Controllers::DateTime& dateTi
     hour_body = lv_line_create(lv_scr_act(), nullptr);
     lv_obj_add_style(hour_body, LV_OBJ_PART_MAIN, &style_lcd);
 
+    // Graph2 top scale
+    // hide picture scale
+    someLvObj = lv_line_create(lv_scr_act(), nullptr);
+    lv_obj_add_style(someLvObj, LV_OBJ_PART_MAIN, &style_bg);
+    lv_obj_set_style_local_line_width(someLvObj, LV_OBJ_PART_MAIN, LV_STATE_DEFAULT, 10);
+    lv_obj_align(someLvObj, AE21WGraph2, LV_ALIGN_IN_TOP_MID, -7, 1);
+    lv_line_set_points(someLvObj, lineG2HideTopScale[0], 2);
 
-    // Draw Graph2 frame
-    graph2Frame = lv_line_create(lv_scr_act(), nullptr);
-    lv_obj_add_style(graph2Frame, LV_OBJ_PART_MAIN, &style_lcd_bg);
-    lv_obj_set_style_local_line_width(graph2Frame, LV_OBJ_PART_MAIN, LV_STATE_DEFAULT, 2);
-    lv_line_set_points(graph2Frame, linePointsGF[1], 9);
+    // 2 small side top scales
+    for (int i = 0; i < 2; i++) {
+        someLvObj = lv_line_create(lv_scr_act(), nullptr);
+        lv_obj_add_style(someLvObj, LV_OBJ_PART_MAIN, &style_lcd_bg);
+        lv_obj_set_style_local_line_width(someLvObj, LV_OBJ_PART_MAIN, LV_STATE_DEFAULT, 1);
+        lv_obj_align(someLvObj, AE21WGraph2, LV_ALIGN_IN_TOP_MID, -7, 1);
+        lv_line_set_points(someLvObj, lineG2TopScale[i], 2);
+    }
 
+    // Main top scale
+    someLvObj = lv_line_create(lv_scr_act(), nullptr);
+    lv_obj_add_style(someLvObj, LV_OBJ_PART_MAIN, &style_lcd_bg);
+    lv_obj_set_style_local_line_width(someLvObj, LV_OBJ_PART_MAIN, LV_STATE_DEFAULT, 3);
+    lv_obj_align(someLvObj, AE21WGraph2, LV_ALIGN_IN_TOP_MID, -7, 1);
+    lv_line_set_points(someLvObj, lineG2TopScale[2], 2);
+    
     // Draw graph2 main disc
     graph2MainDisc = lv_obj_create(lv_scr_act(), NULL);
     lv_obj_set_style_local_line_color(graph2MainDisc, LV_OBJ_PART_MAIN, LV_STATE_DEFAULT, color_graph2_bg);
     lv_obj_set_style_local_bg_color(graph2MainDisc, LV_OBJ_PART_MAIN, LV_STATE_DEFAULT, color_graph2_bg);
-    lv_obj_set_size(graph2MainDisc, 85, 85);
+    lv_obj_set_size(graph2MainDisc, 86, 86);
     lv_obj_set_style_local_radius(graph2MainDisc, LV_OBJ_PART_MAIN, LV_STATE_DEFAULT, 43);
-    lv_obj_align(graph2MainDisc, nullptr, LV_ALIGN_IN_TOP_MID, 61, 14);
+    lv_obj_align(graph2MainDisc, nullptr, LV_ALIGN_IN_TOP_MID, 61, 16);
 
-    // Draw graph2 scales
-    // hours
-    someLvObj = lv_linemeter_create(lv_scr_act(), nullptr);
-    lv_obj_add_style(someLvObj, LV_OBJ_PART_MAIN, &style_lcd_bg);
-    lv_obj_set_style_local_bg_opa(someLvObj, LV_OBJ_PART_MAIN, LV_STATE_DEFAULT, LV_OPA_TRANSP);
-    lv_obj_set_style_local_scale_width(someLvObj, LV_OBJ_PART_MAIN, LV_STATE_DEFAULT, 6);
-    lv_obj_set_style_local_scale_end_line_width(someLvObj, LV_OBJ_PART_MAIN, LV_STATE_DEFAULT, 3);
-    lv_obj_set_size(someLvObj, 131, 131);
-    lv_linemeter_set_scale(someLvObj, 330, 12);
-    lv_linemeter_set_angle_offset(someLvObj, 15);
-    lv_obj_align(someLvObj, graph2MainDisc, LV_ALIGN_CENTER, 1, 1);
-
-    // 15 minutes
-    someLvObj = lv_linemeter_create(lv_scr_act(), nullptr);
-    lv_obj_add_style(someLvObj, LV_OBJ_PART_MAIN, &style_lcd_bg);
-    lv_obj_set_style_local_bg_opa(someLvObj, LV_OBJ_PART_MAIN, LV_STATE_DEFAULT, LV_OPA_TRANSP);
-    lv_obj_set_style_local_scale_width(someLvObj, LV_OBJ_PART_MAIN, LV_STATE_DEFAULT, 7);
-    lv_obj_set_style_local_scale_end_line_width(someLvObj, LV_OBJ_PART_MAIN, LV_STATE_DEFAULT, 3);
-    lv_obj_set_size(someLvObj, 131, 131);
-    lv_linemeter_set_scale(someLvObj, 180, 3);
-    lv_linemeter_set_angle_offset(someLvObj, 180);
-    lv_obj_align(someLvObj, graph2MainDisc, LV_ALIGN_CENTER, 1, 1);
-
-    // minutes
-    someLvObj = lv_linemeter_create(lv_scr_act(), nullptr);
-    lv_obj_add_style(someLvObj, LV_OBJ_PART_MAIN, &style_lcd_bg);
-    lv_obj_set_style_local_bg_opa(someLvObj, LV_OBJ_PART_MAIN, LV_STATE_DEFAULT, LV_OPA_TRANSP);
-    lv_obj_set_style_local_scale_width(someLvObj, LV_OBJ_PART_MAIN, LV_STATE_DEFAULT, 4);
-    lv_obj_set_style_local_scale_end_line_width(someLvObj, LV_OBJ_PART_MAIN, LV_STATE_DEFAULT, 1);
-    lv_obj_set_size(someLvObj, 131, 131);
-    lv_linemeter_set_scale(someLvObj, 354, 60);
-    lv_linemeter_set_angle_offset(someLvObj, 3);
-    lv_obj_align(someLvObj, graph2MainDisc, LV_ALIGN_CENTER, 1, 1);
-
+    // Draw graph2 seconds
     G2SecondMeter = lv_linemeter_create(lv_scr_act(), nullptr);
     lv_obj_add_style(G2SecondMeter, LV_OBJ_PART_MAIN, &style_lcd);
     lv_obj_set_style_local_bg_opa(G2SecondMeter, LV_OBJ_PART_MAIN, LV_STATE_DEFAULT, LV_OPA_TRANSP);
     lv_obj_set_style_local_scale_width(G2SecondMeter, LV_OBJ_PART_MAIN, LV_STATE_DEFAULT, 30);
     lv_obj_set_style_local_scale_end_line_width(G2SecondMeter, LV_OBJ_PART_MAIN, LV_STATE_DEFAULT, 2);
     lv_obj_set_style_local_scale_end_border_width(G2SecondMeter, LV_OBJ_PART_MAIN, LV_STATE_DEFAULT, 0);
-    lv_obj_set_size(G2SecondMeter, 110, 110);
+    lv_obj_set_size(G2SecondMeter, 112, 112);
     lv_obj_align(G2SecondMeter, graph2MainDisc, LV_ALIGN_CENTER, 1, 1);
 
     // small graph2 disc
@@ -463,12 +378,13 @@ WatchFaceCasioStyleAE21W::WatchFaceCasioStyleAE21W(Controllers::DateTime& dateTi
     lv_obj_set_size(graph2SmallDisc, 29, 29);
     lv_obj_align(graph2SmallDisc, graph2MainDisc, LV_ALIGN_CENTER, 0, 0);
 
+
     // Draw Graph2 SEC label
     for (int i = 0; i < 12; i++) {
         someLvObj = lv_line_create(lv_scr_act(), nullptr);
         lv_obj_add_style(someLvObj, LV_OBJ_PART_MAIN, &style_lcd_bg);
         lv_obj_set_style_local_line_width(someLvObj, LV_OBJ_PART_MAIN, LV_STATE_DEFAULT, 2);
-        lv_obj_align(someLvObj, nullptr, LV_ALIGN_IN_TOP_MID, 103, 53);
+        lv_obj_align(someLvObj, graph2SmallDisc, LV_ALIGN_IN_TOP_MID, 42, 11);
         lv_line_set_points(someLvObj, linePointsSEC[i], 2);
     }
 
@@ -484,7 +400,6 @@ WatchFaceCasioStyleAE21W::WatchFaceCasioStyleAE21W(Controllers::DateTime& dateTi
     lv_obj_set_style_local_text_font(label_time_ampm, LV_OBJ_PART_MAIN, LV_STATE_DEFAULT, font_SFDigitalReadout26);
     lv_label_set_text_static(label_time_ampm, "");
     lv_obj_align(label_time_ampm, nullptr, LV_ALIGN_IN_BOTTOM_LEFT, 31, -8);
-
 
     label_seconds = lv_label_create(lv_scr_act(), nullptr);
     lv_obj_add_style(label_seconds, LV_OBJ_PART_MAIN, &style_lcd);
@@ -792,6 +707,11 @@ bool WatchFaceCasioStyleAE21W::IsAvailable(Pinetime::Controllers::FS& filesystem
     if (filesystem.FileOpen(&file, "/fonts/SFDigitalReadout90.bin", LFS_O_RDONLY) < 0) {
         return false;
     }
+
+    filesystem.FileClose(&file);
+    if (filesystem.FileOpen(&file, "/images/CasioAE21WGraph.bin", LFS_O_RDONLY) < 0) {
+        return false;
+    }    
 
     filesystem.FileClose(&file);
     return true;

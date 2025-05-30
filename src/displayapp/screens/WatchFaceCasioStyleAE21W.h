@@ -86,10 +86,12 @@ namespace Pinetime {
                 lv_obj_t* someLvObj;
                 lv_obj_t* bg;
                 lv_obj_t* bg_weather;
+                /*
                 lv_obj_t* graph1Frame;
                 lv_obj_t* graph1MainDisc;
                 lv_obj_t* graph1SmallDisc;
                 lv_obj_t* graph2Frame;
+                */
                 lv_obj_t* graph2MainDisc;
                 lv_obj_t* graph2SmallDisc;
 
@@ -120,6 +122,10 @@ namespace Pinetime {
                 lv_obj_t* btnPrevTheme;
                 lv_obj_t* btnSettings;
 
+                // Graph image
+                lv_obj_t* AE21WGraph1;
+                lv_obj_t* AE21WGraph2;
+                
                 Controllers::DateTime& dateTimeController;
                 const Controllers::Battery& batteryController;
                 const Controllers::Ble& bleController;
