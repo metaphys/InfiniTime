@@ -247,7 +247,7 @@ namespace {
                                                                LV_COLOR_MAKE(0xAD, 0xD8, 0xE6),
                                                                LV_COLOR_MAKE(0x00, 0x00, 0x15)};
 
-    constexpr std::array<lv_color_t, 4> pink = {LV_COLOR_MAKE(0x06, 0x06, 0x06),
+    constexpr std::array<lv_color_t, 4> pink = {LV_COLOR_MAKE(0x00, 0x00, 0x15),
                                                             LV_COLOR_MAKE(0xFA, 0xF1, 0xE4),
                                                             LV_COLOR_MAKE(0xFB, 0xE5, 0xF1),
                                                             LV_COLOR_MAKE(0xE6, 0x48, 0x9A)};
