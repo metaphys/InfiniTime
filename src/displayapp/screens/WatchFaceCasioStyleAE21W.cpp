@@ -240,22 +240,21 @@ WatchFaceCasioStyleAE21W::WatchFaceCasioStyleAE21W(Controllers::DateTime& dateTi
   motionController {motionController},
   weatherService {weatherService} {
 
-
     lfs_file f = {};
 
-    if (filesystem.FileOpen(&f, "/fonts/SFDigitalReadout26.bin", LFS_O_RDONLY) >= 0) {
+    if (filesystem.FileOpen(&f, "/fonts/7segments_20.bin", LFS_O_RDONLY) >= 0) {
         filesystem.FileClose(&f);
-        font_SFDigitalReadout26 = lv_font_load("F:/fonts/SFDigitalReadout26.bin");
+        font_7segments_20 = lv_font_load("F:/fonts/7segments_20.bin");
     }
 
-    if (filesystem.FileOpen(&f, "/fonts/SFDigitalReadout50.bin", LFS_O_RDONLY) >= 0) {
+    if (filesystem.FileOpen(&f, "/fonts/7segments_40.bin", LFS_O_RDONLY) >= 0) {
         filesystem.FileClose(&f);
-        font_SFDigitalReadout50 = lv_font_load("F:/fonts/SFDigitalReadout50.bin");
+        font_7segments_40 = lv_font_load("F:/fonts/7segments_40.bin");
     }
 
-    if (filesystem.FileOpen(&f, "/fonts/SFDigitalReadout90.bin", LFS_O_RDONLY) >= 0) {
+    if (filesystem.FileOpen(&f, "/fonts/7segments_75.bin", LFS_O_RDONLY) >= 0) {
         filesystem.FileClose(&f);
-        font_SFDigitalReadout90 = lv_font_load("F:/fonts/SFDigitalReadout90.bin");
+        font_7segments_75 = lv_font_load("F:/fonts/7segments_75.bin");
     }
 
     const std::array<lv_color_t, 4>* themeColors = returnThemeColors(static_cast<enum theme>(settingsController.GetCasioStyleAE21WColorIndex()));
@@ -391,29 +390,29 @@ WatchFaceCasioStyleAE21W::WatchFaceCasioStyleAE21W(Controllers::DateTime& dateTi
     // Icons and Labels
     label_date = lv_label_create(lv_scr_act(), nullptr);
     lv_obj_add_style(label_date, LV_OBJ_PART_MAIN, &style_lcd);
-    lv_obj_set_style_local_text_font(label_date, LV_OBJ_PART_MAIN, LV_STATE_DEFAULT, font_SFDigitalReadout50);
+    lv_obj_set_style_local_text_font(label_date, LV_OBJ_PART_MAIN, LV_STATE_DEFAULT, font_7segments_40);
     lv_label_set_text_static(label_date, "6-30");
     lv_obj_align(label_date, nullptr, LV_ALIGN_IN_BOTTOM_RIGHT, -30, -78);
 
     label_time_ampm = lv_label_create(lv_scr_act(), nullptr);
     lv_obj_add_style(label_time_ampm, LV_OBJ_PART_MAIN, &style_lcd);
-    lv_obj_set_style_local_text_font(label_time_ampm, LV_OBJ_PART_MAIN, LV_STATE_DEFAULT, font_SFDigitalReadout26);
+    lv_obj_set_style_local_text_font(label_time_ampm, LV_OBJ_PART_MAIN, LV_STATE_DEFAULT, font_7segments_20);
     lv_label_set_text_static(label_time_ampm, "");
     lv_obj_align(label_time_ampm, nullptr, LV_ALIGN_IN_BOTTOM_LEFT, 31, -8);
 
     label_seconds = lv_label_create(lv_scr_act(), nullptr);
     lv_obj_add_style(label_seconds, LV_OBJ_PART_MAIN, &style_lcd);
-    lv_obj_set_style_local_text_font(label_seconds, LV_OBJ_PART_MAIN, LV_STATE_DEFAULT, font_SFDigitalReadout50);
+    lv_obj_set_style_local_text_font(label_seconds, LV_OBJ_PART_MAIN, LV_STATE_DEFAULT, font_7segments_40);
     lv_obj_align(label_seconds, nullptr, LV_ALIGN_IN_BOTTOM_RIGHT, -30, -8);
 
     label_time = lv_label_create(lv_scr_act(), nullptr);
     lv_obj_add_style(label_time, LV_OBJ_PART_MAIN, &style_lcd);
-    lv_obj_set_style_local_text_font(label_time, LV_OBJ_PART_MAIN, LV_STATE_DEFAULT, font_SFDigitalReadout90);
-    lv_obj_align(label_time, label_seconds, LV_ALIGN_IN_BOTTOM_RIGHT, -185, 0);
+    lv_obj_set_style_local_text_font(label_time, LV_OBJ_PART_MAIN, LV_STATE_DEFAULT, font_7segments_75);
+    lv_obj_align(label_time, label_seconds, LV_ALIGN_IN_BOTTOM_RIGHT, -179, 0);
 
     label_day_of_week = lv_label_create(lv_scr_act(), nullptr);
     lv_obj_add_style(label_day_of_week, LV_OBJ_PART_MAIN, &style_lcd);
-    lv_obj_set_style_local_text_font(label_day_of_week, LV_OBJ_PART_MAIN, LV_STATE_DEFAULT, font_SFDigitalReadout26);
+    lv_obj_set_style_local_text_font(label_day_of_week, LV_OBJ_PART_MAIN, LV_STATE_DEFAULT, font_7segments_20);
     lv_label_set_text_static(label_day_of_week, "SUN");
     lv_obj_align(label_day_of_week, nullptr, LV_ALIGN_IN_BOTTOM_RIGHT, -10, -43);
 
@@ -429,7 +428,7 @@ WatchFaceCasioStyleAE21W::WatchFaceCasioStyleAE21W(Controllers::DateTime& dateTi
 
     stepValue = lv_label_create(lv_scr_act(), nullptr);
     lv_obj_add_style(stepValue, LV_OBJ_PART_MAIN, &style_lcd);
-    lv_obj_set_style_local_text_font(stepValue, LV_OBJ_PART_MAIN, LV_STATE_DEFAULT, font_SFDigitalReadout26);
+    lv_obj_set_style_local_text_font(stepValue, LV_OBJ_PART_MAIN, LV_STATE_DEFAULT, font_7segments_20);
     lv_label_set_text_static(stepValue, "0K");
     lv_obj_align(stepValue, nullptr, LV_ALIGN_IN_LEFT_MID, 101, 16);
 
@@ -440,7 +439,7 @@ WatchFaceCasioStyleAE21W::WatchFaceCasioStyleAE21W(Controllers::DateTime& dateTi
 
     heartbeatValue = lv_label_create(lv_scr_act(), nullptr);
     lv_obj_add_style(heartbeatValue, LV_OBJ_PART_MAIN, &style_lcd);
-    lv_obj_set_style_local_text_font(heartbeatValue, LV_OBJ_PART_MAIN, LV_STATE_DEFAULT, font_SFDigitalReadout26);
+    lv_obj_set_style_local_text_font(heartbeatValue, LV_OBJ_PART_MAIN, LV_STATE_DEFAULT, font_7segments_20);
     lv_label_set_text_fmt(heartbeatValue, "%d", heartbeat.Get());
     lv_label_set_text_static(heartbeatValue, "");
     lv_obj_align(heartbeatValue, nullptr, LV_ALIGN_IN_LEFT_MID, 101, 38);
@@ -454,7 +453,7 @@ WatchFaceCasioStyleAE21W::WatchFaceCasioStyleAE21W(Controllers::DateTime& dateTi
 
     temperature = lv_label_create(lv_scr_act(), nullptr);
     lv_obj_add_style(temperature, LV_LABEL_PART_MAIN, &style_lcd);
-    lv_obj_set_style_local_text_font(temperature, LV_LABEL_PART_MAIN, LV_STATE_DEFAULT, font_SFDigitalReadout26);
+    lv_obj_set_style_local_text_font(temperature, LV_LABEL_PART_MAIN, LV_STATE_DEFAULT, font_7segments_20);
     lv_label_set_text(temperature, "--");
     lv_obj_align(temperature, nullptr, LV_ALIGN_IN_RIGHT_MID, -202, 38);
 
@@ -525,23 +524,28 @@ WatchFaceCasioStyleAE21W::WatchFaceCasioStyleAE21W(Controllers::DateTime& dateTi
 }
 
 WatchFaceCasioStyleAE21W::~WatchFaceCasioStyleAE21W() {
-    lv_task_del(taskRefresh);
+    if (taskRefresh) {
+        lv_task_del(taskRefresh);
+        taskRefresh = nullptr;
+    }
+
+    if (font_7segments_20) {
+        lv_font_free(font_7segments_20);
+        font_7segments_20 = nullptr;
+    }
+    if (font_7segments_40) {
+        lv_font_free(font_7segments_40);
+        font_7segments_40 = nullptr;
+    }
+    if (font_7segments_75) {
+        lv_font_free(font_7segments_75);
+        font_7segments_75 = nullptr;
+    }
 
     lv_style_reset(&style_bg);
     lv_style_reset(&style_lcd_bg);
     lv_style_reset(&style_lcd);
 
-    if (font_SFDigitalReadout26 != nullptr) {
-        lv_font_free(font_SFDigitalReadout26);
-    }
-
-    if (font_SFDigitalReadout50 != nullptr) {
-        lv_font_free(font_SFDigitalReadout50);
-    }
-
-    if (font_SFDigitalReadout90 != nullptr) {
-        lv_font_free(font_SFDigitalReadout90);
-    }
 
     lv_obj_clean(lv_scr_act());
 }
@@ -694,17 +698,17 @@ bool WatchFaceCasioStyleAE21W::IsAvailable(Pinetime::Controllers::FS& filesystem
 
     lfs_file file = {};
 
-    if (filesystem.FileOpen(&file, "/fonts/SFDigitalReadout26.bin", LFS_O_RDONLY) < 0) {
+    if (filesystem.FileOpen(&file, "/fonts/7segments_20.bin", LFS_O_RDONLY) < 0) {
         return false;
     }
 
     filesystem.FileClose(&file);
-    if (filesystem.FileOpen(&file, "/fonts/SFDigitalReadout50.bin", LFS_O_RDONLY) < 0) {
+    if (filesystem.FileOpen(&file, "/fonts/7segments_40.bin", LFS_O_RDONLY) < 0) {
         return false;
     }
 
     filesystem.FileClose(&file);
-    if (filesystem.FileOpen(&file, "/fonts/SFDigitalReadout90.bin", LFS_O_RDONLY) < 0) {
+    if (filesystem.FileOpen(&file, "/fonts/7segments_75.bin", LFS_O_RDONLY) < 0) {
         return false;
     }
 
