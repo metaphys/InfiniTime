@@ -15,7 +15,6 @@
 #include "components/battery/BatteryController.h"
 #include "components/ble/NotificationManager.h"
 
-
 namespace Pinetime {
     namespace Controllers {
         class Settings;
@@ -86,14 +85,14 @@ namespace Pinetime {
                 lv_obj_t* someLvObj;
                 lv_obj_t* bg;
                 lv_obj_t* bg_weather;
-                /*
-                lv_obj_t* graph1Frame;
-                lv_obj_t* graph1MainDisc;
-                lv_obj_t* graph1SmallDisc;
-                lv_obj_t* graph2Frame;
-                */
+
                 lv_obj_t* graph2MainDisc;
                 lv_obj_t* graph2SmallDisc;
+
+                // Graph image
+                static lv_img_dsc_t CasioAE21WGraphImage;
+                lv_obj_t* AE21WGraph1 = nullptr;
+                lv_obj_t* AE21WGraph2 = nullptr;
 
                 // Labels and icons
                 lv_obj_t* label_function;
@@ -121,10 +120,6 @@ namespace Pinetime {
                 lv_obj_t* btnNextTheme;
                 lv_obj_t* btnPrevTheme;
                 lv_obj_t* btnSettings;
-
-                // Graph image
-                lv_obj_t* AE21WGraph1;
-                lv_obj_t* AE21WGraph2;
                 
                 Controllers::DateTime& dateTimeController;
                 const Controllers::Battery& batteryController;
