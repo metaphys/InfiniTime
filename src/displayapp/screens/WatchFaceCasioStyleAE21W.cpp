@@ -218,11 +218,11 @@ namespace {
     }
 
     int16_t CoordinateXRelocateG1(int16_t x) {
-        return (x - 63 + LV_HOR_RES / 2);
+        return (x - 60 + LV_HOR_RES / 2);
     }
 
     int16_t CoordinateYRelocateG1(int16_t y) {
-        return std::abs(y + 64 - LV_HOR_RES / 2);
+        return std::abs(y + 62 - LV_HOR_RES / 2);
     }
 
     lv_point_t CoordinateRelocateG1(int16_t radius, int16_t angle) {
@@ -403,6 +403,7 @@ WatchFaceCasioStyleAE21W::WatchFaceCasioStyleAE21W(Controllers::DateTime& dateTi
     lv_color_t color_lcd_bg = (*themeColors)[1];
     lv_color_t color_graph2_bg = (*themeColors)[2];
     lv_color_t color_lcd = (*themeColors)[3];
+
     batteryThemeColor = color_lcd;
 
     // set styles
@@ -742,7 +743,7 @@ void WatchFaceCasioStyleAE21W::Refresh() {
             lv_linemeter_set_angle_offset(G2SecondMeter, 0);
         } else {
             lv_linemeter_set_scale(G2SecondMeter,(second - 1) * 6, second);
-            lv_linemeter_set_angle_offset(G2SecondMeter, second * 3 - 1);
+            lv_linemeter_set_angle_offset(G2SecondMeter, second * 3 - 1 + 4);
         }
 
         currentDateTime = std::chrono::time_point_cast<std::chrono::minutes>(dateTimeController.CurrentDateTime());
@@ -794,7 +795,6 @@ void WatchFaceCasioStyleAE21W::Refresh() {
                 // 12h mode: mmddyyyy, first DOW=Sunday;
                 lv_label_set_text_fmt(label_date, "%2d-%2d", month, day);
             }
-
             lv_label_set_text_fmt(label_day_of_week, "%s", dateTimeController.DayOfWeekShortToString());
         }
     }
