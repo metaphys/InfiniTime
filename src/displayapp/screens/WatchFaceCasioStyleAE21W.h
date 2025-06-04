@@ -120,7 +120,7 @@ namespace Pinetime {
                 lv_obj_t* btnNextTheme;
                 lv_obj_t* btnPrevTheme;
                 lv_obj_t* btnSettings;
-                
+
                 Controllers::DateTime& dateTimeController;
                 const Controllers::Battery& batteryController;
                 const Controllers::Ble& bleController;
