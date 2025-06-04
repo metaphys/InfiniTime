@@ -703,6 +703,26 @@ void WatchFaceCasioStyleAE21W::SetBatteryIcon() {
 }
 
 void WatchFaceCasioStyleAE21W::Refresh() {
+    // Check that objects needed are loaded
+    if (!bg || !G2SecondMeter || !label_time) {
+        return;
+    }
+
+    // Close menu after 5 mins
+    if (lv_tick_get() - savedTick > 300000) { // 5 minutes
+        if (!lv_obj_get_hidden(btnSettings)) {
+            CloseMenu();
+        }
+    }
+
+    // Less refresh
+    static uint32_t lastRefresh = 0;
+    uint32_t currentTick = lv_tick_get();
+    if (currentTick - lastRefresh < 100) { // Max 10 FPS
+        return;
+    }
+    lastRefresh = currentTick;
+
     isCharging = batteryController.IsCharging();
     if (isCharging.IsUpdated()) {
         if (isCharging.Get()) {
