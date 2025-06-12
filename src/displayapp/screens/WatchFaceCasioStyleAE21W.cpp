@@ -645,11 +645,32 @@ WatchFaceCasioStyleAE21W::WatchFaceCasioStyleAE21W(Controllers::DateTime& dateTi
 }
 
 WatchFaceCasioStyleAE21W::~WatchFaceCasioStyleAE21W() {
+    if(AE21WGraph1) {
+        lv_obj_clean(AE21WGraph1);
+        AE21WGraph1 = nullptr;
+    }
+    if(AE21WGraph2) {
+        lv_obj_clean(AE21WGraph2);
+        AE21WGraph2 = nullptr;
+    }
+    if(secLabel) {
+        lv_obj_clean(secLabel);
+        secLabel = nullptr;
+    }
+    if(graph2TopScale) {
+        lv_obj_clean(graph2TopScale);
+        graph2TopScale = nullptr;
+    }
+
+    if(someLvObj) {
+        lv_obj_clean(someLvObj);
+        someLvObj = nullptr;
+    }
+
     if (taskRefresh) {
         lv_task_del(taskRefresh);
         taskRefresh = nullptr;
     }
-
     if (font_7segments_20) {
         lv_font_free(font_7segments_20);
         font_7segments_20 = nullptr;
@@ -666,7 +687,6 @@ WatchFaceCasioStyleAE21W::~WatchFaceCasioStyleAE21W() {
     lv_style_reset(&style_bg);
     lv_style_reset(&style_lcd_bg);
     lv_style_reset(&style_lcd);
-
 
     lv_obj_clean(lv_scr_act());
 }
