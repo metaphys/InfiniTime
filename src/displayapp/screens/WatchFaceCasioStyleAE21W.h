@@ -84,8 +84,6 @@ namespace Pinetime {
                 // Main Drawing
                 lv_obj_t* someLvObj;
                 lv_obj_t* bg;
-                lv_obj_t* bg_weather;
-
                 lv_obj_t* graph2MainDisc;
                 lv_obj_t* graph2SmallDisc;
 
