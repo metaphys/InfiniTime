@@ -92,6 +92,14 @@ namespace Pinetime {
                 lv_obj_t* AE21WGraph1 = nullptr;
                 lv_obj_t* AE21WGraph2 = nullptr;
 
+                // Sec Label Image
+                static lv_img_dsc_t SecLabelImage;
+                lv_obj_t* secLabel = nullptr;
+
+                // Graph2 top scale
+                static lv_img_dsc_t Graph2TopScaleImage;
+                lv_obj_t* graph2TopScale = nullptr;
+
                 // Labels and icons
                 lv_obj_t* label_function;
                 lv_obj_t* label_time;

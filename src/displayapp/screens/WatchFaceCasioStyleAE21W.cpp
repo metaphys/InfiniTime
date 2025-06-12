@@ -144,6 +144,31 @@ lv_img_dsc_t WatchFaceCasioStyleAE21W::CasioAE21WGraphImage = {
     }
 };
 
+lv_img_dsc_t WatchFaceCasioStyleAE21W::SecLabelImage = {
+    {LV_IMG_CF_INDEXED_1BIT, 0, 0, 19, 7},
+    29,
+    (uint8_t[]){
+        0x00, 0x00, 0x00, 0xff, // Color of index 0
+        0xff, 0xff, 0xff, 0xff, // Color of index 1
+
+        0x06, 0x0c, 0x1f, 0x7e, 0xfd, 0xff, 0x7e, 0xfd, 0xff, 0x06,
+        0x0d, 0xff, 0xf6, 0xfd, 0xff, 0xf6, 0xfd, 0xff, 0x06, 0x0c, 0x1f
+    }
+};
+
+lv_img_dsc_t WatchFaceCasioStyleAE21W::Graph2TopScaleImage = {
+    {LV_IMG_CF_INDEXED_1BIT, 0, 0, 13, 11},
+    30,
+    (uint8_t[]){
+        0x00, 0x00, 0x00, 0xff, // Color of index 0
+        0xff, 0xff, 0xff, 0xff, // Color of index 1
+
+        0xff, 0xff, 0xff, 0xff, 0xf8, 0xff, 0x78, 0xf7, 0x78, 0xf7,
+        0xf8, 0xff, 0xf8, 0xff, 0xf8, 0xff, 0xf8, 0xff, 0xff, 0xff,
+        0xff, 0xff
+    }
+};
+
 // Time background lines points
 static constexpr lv_point_t linesPointsTBG[6][2] = {
     {{13,181},{227,181}},
@@ -165,41 +190,6 @@ static constexpr lv_point_t linePointsTT[4][2] = {
     {{132,124},{132, 169}},
     {{68, 124},{68, 169}},
     {{2, 147},{132, 147}}
-};
-
-// Graph2 hide top scale from graph1 picture
-static constexpr lv_point_t lineG2HideTopScale[1][2] = {
-    {{52, 7}, {64, 7}},
-};
-
-// Graph2 draw top scale
-static constexpr lv_point_t lineG2TopScale[3][2] = {
-    // 2 small scale
-    {{51, 3}, {51, 5}},
-    {{63, 3}, {63, 5}},
-    // Main top scale
-    {{58, 2}, {58, 10}}
-};
-
-// SEC label lines points
-static constexpr lv_point_t linePointsSEC[12][2] = {
-    // s
-    {{0, 0}, {4, 0}},
-    {{0, 0}, {0, 3}},
-    {{0, 3}, {4, 3}},
-    {{4, 3}, {4, 6}},
-    {{0, 6}, {4, 6}},
-
-    // e
-    {{7, 0}, {11, 0}},
-    {{7, 0}, {7, 6}},
-    {{7, 3}, {11, 3}},
-    {{7, 6}, {11, 6}},
-
-    // c
-    {{14, 0}, {18, 0}},
-    {{14, 0}, {14, 6}},
-    {{14, 6}, {18, 6}}
 };
 
 static constexpr int16_t HourLength = 30;
@@ -354,9 +344,15 @@ void WatchFaceCasioStyleAE21W::UpdateSelected(lv_obj_t* object, lv_event_t event
         // Set images colors
         lv_img_buf_set_palette(&CasioAE21WGraphImage, 1, color_bg);
         lv_img_buf_set_palette(&CasioAE21WGraphImage, 0, color_lcd_bg);
+        lv_img_buf_set_palette(&SecLabelImage, 1, color_bg);
+        lv_img_buf_set_palette(&SecLabelImage, 0, color_lcd_bg);
+        lv_img_buf_set_palette(&Graph2TopScaleImage, 1, color_bg);
+        lv_img_buf_set_palette(&Graph2TopScaleImage, 0, color_lcd_bg);
 
         // Refresh
         lv_img_cache_invalidate_src(&CasioAE21WGraphImage);
+        lv_img_cache_invalidate_src(&SecLabelImage);
+        lv_img_cache_invalidate_src(&Graph2TopScaleImage);
         lv_obj_invalidate(bg);
     }
 }
@@ -470,30 +466,6 @@ WatchFaceCasioStyleAE21W::WatchFaceCasioStyleAE21W(Controllers::DateTime& dateTi
     hour_body = lv_line_create(lv_scr_act(), nullptr);
     lv_obj_add_style(hour_body, LV_OBJ_PART_MAIN, &style_lcd);
 
-    // Graph2 top scale
-    // hide picture scale
-    someLvObj = lv_line_create(lv_scr_act(), nullptr);
-    lv_obj_add_style(someLvObj, LV_OBJ_PART_MAIN, &style_bg);
-    lv_obj_set_style_local_line_width(someLvObj, LV_OBJ_PART_MAIN, LV_STATE_DEFAULT, 10);
-    lv_obj_align(someLvObj, AE21WGraph2, LV_ALIGN_IN_TOP_MID, -7, 1);
-    lv_line_set_points(someLvObj, lineG2HideTopScale[0], 2);
-
-    // Graph2 small side top scales
-    for (int i = 0; i < 2; i++) {
-        someLvObj = lv_line_create(lv_scr_act(), nullptr);
-        lv_obj_add_style(someLvObj, LV_OBJ_PART_MAIN, &style_lcd_bg);
-        lv_obj_set_style_local_line_width(someLvObj, LV_OBJ_PART_MAIN, LV_STATE_DEFAULT, 1);
-        lv_obj_align(someLvObj, AE21WGraph2, LV_ALIGN_IN_TOP_MID, -7, 1);
-        lv_line_set_points(someLvObj, lineG2TopScale[i], 2);
-    }
-
-    // Graph2 Main top scale
-    someLvObj = lv_line_create(lv_scr_act(), nullptr);
-    lv_obj_add_style(someLvObj, LV_OBJ_PART_MAIN, &style_lcd_bg);
-    lv_obj_set_style_local_line_width(someLvObj, LV_OBJ_PART_MAIN, LV_STATE_DEFAULT, 3);
-    lv_obj_align(someLvObj, AE21WGraph2, LV_ALIGN_IN_TOP_MID, -8, 1);
-    lv_line_set_points(someLvObj, lineG2TopScale[2], 2);
-
     // Draw graph2 main disc
     graph2MainDisc = lv_obj_create(lv_scr_act(), NULL);
     lv_obj_set_style_local_line_color(graph2MainDisc, LV_OBJ_PART_MAIN, LV_STATE_DEFAULT, color_graph2_bg);
@@ -519,15 +491,22 @@ WatchFaceCasioStyleAE21W::WatchFaceCasioStyleAE21W(Controllers::DateTime& dateTi
     lv_obj_set_size(graph2SmallDisc, 29, 29);
     lv_obj_align(graph2SmallDisc, graph2MainDisc, LV_ALIGN_CENTER, 0, 0);
 
+    // Apply theme colors to image
+    lv_img_buf_set_palette(&SecLabelImage, 1, color_bg);
+    lv_img_buf_set_palette(&SecLabelImage, 0, color_lcd_bg);
 
-    // Draw Graph2 SEC label
-    for (int i = 0; i < 12; i++) {
-        someLvObj = lv_line_create(lv_scr_act(), nullptr);
-        lv_obj_add_style(someLvObj, LV_OBJ_PART_MAIN, &style_lcd_bg);
-        lv_obj_set_style_local_line_width(someLvObj, LV_OBJ_PART_MAIN, LV_STATE_DEFAULT, 2);
-        lv_obj_align(someLvObj, graph2SmallDisc, LV_ALIGN_IN_TOP_MID, 42, 11);
-        lv_line_set_points(someLvObj, linePointsSEC[i], 2);
-    }
+    // SEC label
+    secLabel = lv_img_create(lv_scr_act(), nullptr);
+    lv_img_set_src(secLabel, &SecLabelImage);
+    lv_obj_align(secLabel, graph2SmallDisc, LV_ALIGN_IN_TOP_MID, 0, 11);
+
+    lv_img_buf_set_palette(&Graph2TopScaleImage, 1, color_bg);
+    lv_img_buf_set_palette(&Graph2TopScaleImage, 0, color_lcd_bg);
+
+    // Graph2 top scale
+    graph2TopScale = lv_img_create(lv_scr_act(), nullptr);
+    lv_img_set_src(graph2TopScale, &Graph2TopScaleImage);
+    lv_obj_align(graph2TopScale, AE21WGraph2, LV_ALIGN_IN_TOP_MID, 0, 2);
 
     // Icons and Labels
     label_date = lv_label_create(lv_scr_act(), nullptr);
