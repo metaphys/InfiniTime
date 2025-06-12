@@ -425,14 +425,14 @@ WatchFaceCasioStyleAE21W::WatchFaceCasioStyleAE21W(Controllers::DateTime& dateTi
     lv_style_set_scale_end_color(&style_lcd, LV_STATE_DEFAULT, color_lcd);
     lv_style_set_line_rounded(&style_lcd, LV_STATE_DEFAULT, false);
 
-    // Draw backgroud
+    // background
     bg = lv_obj_create(lv_scr_act(), nullptr);
     lv_obj_add_style(bg, LV_OBJ_PART_MAIN, &style_bg);
     lv_obj_set_style_local_radius(bg, LV_BTN_PART_MAIN, LV_STATE_DEFAULT, 0);
     lv_obj_set_size(bg, 250, 250);
     lv_obj_align(bg, nullptr, LV_ALIGN_IN_TOP_LEFT, -5, -5);
 
-    // Draw time background
+    // time background
     for (int i = 0; i < 6; i++) {
         someLvObj = lv_line_create(lv_scr_act(), nullptr);
         lv_obj_add_style(someLvObj, LV_OBJ_PART_MAIN, &style_lcd_bg);
@@ -444,7 +444,7 @@ WatchFaceCasioStyleAE21W::WatchFaceCasioStyleAE21W(Controllers::DateTime& dateTi
     lv_img_buf_set_palette(&CasioAE21WGraphImage, 1, color_bg);
     lv_img_buf_set_palette(&CasioAE21WGraphImage, 0, color_lcd_bg);
 
-    // Draw Graph 1 and 2 frame and scales
+    // Graph 1 and 2 frame and scales
     AE21WGraph1 = lv_img_create(lv_scr_act(), nullptr);
     lv_img_set_src(AE21WGraph1, &CasioAE21WGraphImage);
     lv_obj_align(AE21WGraph1, nullptr, LV_ALIGN_IN_TOP_LEFT, 3, 2);
@@ -452,7 +452,7 @@ WatchFaceCasioStyleAE21W::WatchFaceCasioStyleAE21W(Controllers::DateTime& dateTi
     lv_img_set_src(AE21WGraph2, &CasioAE21WGraphImage);
     lv_obj_align(AE21WGraph2, nullptr, LV_ALIGN_IN_TOP_LEFT, 122, 2);
 
-    // Draw Background time table
+    // Background time table
     for (int i = 0; i < 4; i++) {
         someLvObj = lv_line_create(lv_scr_act(), nullptr);
         lv_obj_add_style(someLvObj, LV_OBJ_PART_MAIN, &style_bg);
