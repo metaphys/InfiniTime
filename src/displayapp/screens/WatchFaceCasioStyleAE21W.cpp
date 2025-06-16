@@ -258,7 +258,7 @@ namespace {
 bool WatchFaceCasioStyleAE21W::OnTouchEvent(Pinetime::Applications::TouchEvents event) {
   if ((event == Pinetime::Applications::TouchEvents::LongTap) && lv_obj_get_hidden(btnSettings)) {
     lv_obj_set_hidden(btnSettings, false);
-    savedTick = lv_tick_get();
+    savedTick = xTaskGetTickCount();
     return true;
   }
   // Prevent screen from sleeping when double tapping with settings on
@@ -289,9 +289,9 @@ void WatchFaceCasioStyleAE21W::UpdateSelected(lv_obj_t* object, lv_event_t event
     }
 
     // avoid clicking too quickly
-    static uint32_t lastClick = 0;
-    uint32_t currentTick = lv_tick_get();
-    if (currentTick - lastClick < 200) { // 200ms
+    static TickType_t lastClick = 0;
+    TickType_t currentTick = lv_tick_get();
+    if ((currentTick - lastClick) < pdMS_TO_TICKS(200)) { // 200ms
         return;
     }
     lastClick = currentTick;
