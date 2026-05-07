@@ -66,9 +66,5 @@ namespace Pinetime::Applications {
     static bool IsAvailable(Pinetime::Controllers::FS& /*filesystem*/) {
       return true;
     };
-
-    static bool IsAvailable(Pinetime::Controllers::FS& /*filesystem*/) {
-      return true;
-    };
   };
 }

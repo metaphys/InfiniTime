@@ -36,7 +36,6 @@
 #include "displayapp/InfiniTimeTheme.h"
 #include "utility/Math.h"
 
-
 int WeatherCallback(uint16_t connHandle, uint16_t attrHandle, struct ble_gatt_access_ctxt* ctxt, void* arg);
 
 namespace Pinetime {
@@ -84,18 +83,6 @@ namespace Pinetime {
 
         [[nodiscard]] int16_t Fahrenheit() const {
           return Utility::RoundedDiv(PreciseFahrenheit(), static_cast<int16_t>(100));
-        }
-
-        [[nodiscard]] lv_color_t Color() const {
-          int16_t celsius = Celsius();
-          if (celsius <= 0) { // freezing
-            return Colors::blue;
-          } else if (celsius <= 4) { // ice
-            return LV_COLOR_CYAN;
-          } else if (celsius >= 27) { // hot
-            return Colors::deepOrange;
-          }
-          return Colors::orange; // normal
         }
 
         [[nodiscard]] lv_color_t Color() const {
