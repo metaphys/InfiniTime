@@ -517,7 +517,7 @@ WatchFaceCasioStyleAE21W::WatchFaceCasioStyleAE21W(Controllers::DateTime& dateTi
 
     label_time_ampm = lv_label_create(lv_scr_act(), nullptr);
     lv_obj_add_style(label_time_ampm, LV_OBJ_PART_MAIN, &style_lcd);
-    lv_label_set_text_static(label_time_ampm, "A");
+    lv_label_set_text_static(label_time_ampm, " ");
     lv_obj_align(label_time_ampm, nullptr, LV_ALIGN_IN_BOTTOM_LEFT, 31, -8);
 
     label_seconds = lv_label_create(lv_scr_act(), nullptr);
@@ -831,7 +831,7 @@ void WatchFaceCasioStyleAE21W::Refresh() {
                 temp = optCurrentWeather->temperature.Fahrenheit();
             }
             lv_label_set_text_fmt(temperature, "%d°", temp);
-            lv_label_set_text(weatherIcon, Symbols::GetSymbol(optCurrentWeather->iconId));
+            lv_label_set_text(weatherIcon, Symbols::GetSymbol(optCurrentWeather->iconId, false));
         } else {
             lv_label_set_text(temperature, "--");
             lv_label_set_text(weatherIcon, Symbols::ban);
